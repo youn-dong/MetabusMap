@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,19 +16,19 @@ public class PlayerController : MonoBehaviour
 
     protected Vector2 lookDirection = Vector2.zero;
     public Vector2 LookDirection { get { return lookDirection; } }
-    
 
+    [SerializeField] CameraFollow cameraFollow;
     protected virtual void Awake()
     {
-        if (maincamera == null)
-        {
             maincamera = Camera.main;
-        }
-        if (maincamera == null)
+            _rigidbody = GetComponent<Rigidbody2D>();
+    }
+    protected void Start()
+    {
+        if(cameraFollow != null)
         {
-            maincamera = FindObjectOfType<Camera>();
+            cameraFollow.SetCamera(transform); // cameraFollow 스크립트를 통해서 player와 연결
         }
-        _rigidbody = GetComponent<Rigidbody2D>();
     }
     protected void Update()
     {
@@ -35,7 +36,7 @@ public class PlayerController : MonoBehaviour
         Rotate(lookDirection);
         Movement(movementDirection);
     }
-    protected void HandleAction()
+    protected void HandleAction()       
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -44,26 +45,16 @@ public class PlayerController : MonoBehaviour
         Vector2 mousePosition = Input.mousePosition;
         Vector2 worldPos = maincamera.ScreenToWorldPoint(mousePosition);
         lookDirection = (worldPos - (Vector2)transform.position);
-
-        if(lookDirection.magnitude<1f)
-        {
-            lookDirection = Vector2.zero;
-        }
-        else
-        {
-            lookDirection = lookDirection.normalized;
-        }
     }
     private void Movement(Vector2 direction)
     {
-        direction = direction * 5;
-        _rigidbody.velocity = direction * speed ;
+        _rigidbody.velocity = direction * speed ; //player의 이동속도
     }
     private void Rotate(Vector2 direction)
     {
         float rotZ = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, rotZ));
-        bool isLeft = Mathf.Abs(rotZ) > 90f;
-        spriteRenderer.flipX = isLeft;
+        spriteRenderer.flipX = rotZ > 90f || rotZ < -90f; // 반환된 Rad값이 90도를 초과하면 true로 왼쪽을 보도록
+                                                          // 반환된 값이 -90도 미만이라면 false로 오른쪽을 보도록
     }
 }
