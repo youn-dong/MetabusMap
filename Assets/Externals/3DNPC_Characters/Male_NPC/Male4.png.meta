@@ -427,8 +427,8 @@ TextureImporter:
       name: Male4_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 528
+        x: 64
+        y: 192
         width: 32
         height: 48
       alignment: 0
@@ -721,8 +721,8 @@ TextureImporter:
       name: Male4_14
       rect:
         serializedVersion: 2
-        x: 192
-        y: 480
+        x: 224
+        y: 489
         width: 32
         height: 48
       alignment: 0
