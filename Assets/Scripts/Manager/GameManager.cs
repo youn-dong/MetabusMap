@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 {
     static GameManager gameManager;
     public static GameManager Instance { get { return gameManager; } }
-    public UIManager uimanager;
+    private UIManager uimanager;
     public  UIManager UImanager { get { return uimanager; } }
     private int currentScore = 0;
 
@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour
         uimanager.SetReStart();
     }
     public void RestartGame()
-    { 
+    {
+        uimanager.restartText.gameObject.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void AddScore(int score)
