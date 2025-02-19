@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Plane : MonoBehaviour
 {
-    Animator animator = null;
-    Rigidbody2D _rigidbody = null;
+    Animator animator;
+    Rigidbody2D _rigidbody;
 
     public float flapForce = 6f;
     public float forwardSpeed = 3f;
@@ -64,20 +64,25 @@ public class Plane : MonoBehaviour
         
         if(isFlap)
         {
-            _rigidbody.velocity = velocity;
+            velocity.y += flapForce;
+            isFlap = false;
 
-            float angle = Mathf.Clamp((_rigidbody.velocity.y * 10f), -90, 90); // y축에 있는 중력의 속도는 -90에서 90f 사이로 정의
-            float lerpAngle = Mathf.Lerp(transform.rotation.eulerAngles.z, angle, Time.fixedDeltaTime * 5f);
-            transform.rotation = Quaternion.Euler(0, 0, lerpAngle);
         }
+        _rigidbody.velocity = velocity;
+
+        float angle = Mathf.Clamp((_rigidbody.velocity.y * 10f), -90, 90); // y축에 있는 중력의 속도는 -90에서 90f 사이로 정의
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (GodMode) return;
+
         if (isDead) return;
 
-        animator.SetInteger("IsDie", 1);
+       
         isDead = true;
         deathCoolDown = 1f;
+
+        animator.SetInteger("IsDie", 1);
     }
 }
