@@ -16,9 +16,11 @@ public class Plane : MonoBehaviour
     bool isFlap = false;
 
     public bool GodMode = false;
+    GameManager gameManager;
 
     private void Start()
     {
+        gameManager = GameManager.Instance;
         animator = transform.GetComponentInChildren<Animator>();
         _rigidbody = transform.GetComponent<Rigidbody2D>();
 
@@ -39,7 +41,7 @@ public class Plane : MonoBehaviour
             {
                 if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
                 {
-                    //게임 재시작 함수 호출
+                    gameManager.RestartGame();
                 }
             }
             else
@@ -79,10 +81,10 @@ public class Plane : MonoBehaviour
 
         if (isDead) return;
 
-       
         isDead = true;
         deathCoolDown = 1f;
 
         animator.SetInteger("IsDie", 1);
+        gameManager.GameOver();
     }
 }
