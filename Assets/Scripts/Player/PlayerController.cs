@@ -37,9 +37,6 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         movementDirection = new Vector2(horizontal, vertical).normalized;
-
-        Vector2 mousePosition = Input.mousePosition;
-        Vector2 worldPos = maincamera.ScreenToWorldPoint(mousePosition);
     }
     private void Movement(Vector2 direction)
     {
