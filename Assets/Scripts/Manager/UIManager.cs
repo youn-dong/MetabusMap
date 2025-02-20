@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,6 +17,10 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set;  } 
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI restartText;
+
+    private List<string> currentDialogue;
+    private bool isCommunicated = false;
+    private int dialogueIndex = 0;
     private void Awake()
     {
         if (Instance == null)
@@ -38,7 +43,13 @@ public class UIManager : MonoBehaviour
             npc = FindFirstObjectByType<NPC>();
         }
     }
-
+    public void Update()
+    {
+        if(isCommunicated  && Input.GetKeyDown(KeyCode.Space))
+        {
+            ShowNextDialogue();
+        }
+    }
     public void SetReStart()
     {
         restartText.gameObject.SetActive(true);
@@ -47,15 +58,44 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = score.ToString();
     }
-   public void showDialogue(GameObject npcObject)
+    public void StartDialogue(GameObject npcObject)
     {
+        if (isCommunicated) return; //이미 대화하고있을때는 생략
+
+        npc = npcObject.GetComponent<NPC>();
+        if(npc==null) return;
+
+        RestartDialogue();
+
+        currentDialogue = npc.GetNPCDialogue(npcObject);
+        dialogueIndex = 0;
         panel.SetActive(true);
-        npcText.text = npc.GetNPCDialogue(npcObject);
-        Invoke("HideDialogue", 3f);
+        isCommunicated = true;
+        ShowNextDialogue();
+    }
+    public void ShowNextDialogue()
+    {
+        if(dialogueIndex <currentDialogue.Count)
+        {
+            npcText.text = currentDialogue[dialogueIndex];
+            dialogueIndex++;
+        }
+        else
+        {
+            HideDialogue();
+        }
     }
     public void HideDialogue()
     {
         panel.SetActive(false);
+        isCommunicated = false;
+    }
+    public void RestartDialogue()
+    {
+        dialogueIndex = 0;
+        isCommunicated = false;
+        panel.SetActive(false);
+        npcText.text = "";
     }
     protected void CheckScene()
     {
