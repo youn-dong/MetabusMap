@@ -55,11 +55,11 @@ public class NPC : MonoBehaviour
             Vector3 interaction_screenPos= Camera.main.WorldToScreenPoint(transform.position);
             interactionUI_Instance.transform.position = screenPos + new Vector3(0, 80, 0);
 
-        if(gameChoice)
+        if(!gameChoice)
             {
                 if(Input.GetKeyDown(KeyCode.Y))
                 {
-                    Debug.Log("Y키 눌림 - 씬 변경 시도");
+                Debug.Log("Y키 눌림 - 씬 변경 시도");
                     SceneManager.LoadScene(1);
                 }
             }

@@ -26,29 +26,26 @@ public class UIManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+        //CheckScene();
     }
     private void Start()
     {
         if (restartText != null)
-        restartText.gameObject.SetActive(false);
+            restartText.gameObject.SetActive(false);
 
-        if( npc == null)
-        {
+        if ( npc == null)
             npc = FindFirstObjectByType<NPC>();
-        }
+
     }
     public void Update()
     {
         if(isCommunicated  && Input.GetKeyDown(KeyCode.Space))
-        {
             ShowNextDialogue();
-        }
     }
     public void SetReStart()
     {
@@ -63,6 +60,7 @@ public class UIManager : MonoBehaviour
         if (isCommunicated) return; //이미 대화하고있을때는 생략
 
         npc = npcObject.GetComponent<NPC>();
+
         if(npc==null) return;
 
         RestartDialogue();
@@ -101,10 +99,18 @@ public class UIManager : MonoBehaviour
     //{
     //    string CurrentScene = SceneManager.GetActiveScene().name;
 
-    //    if(CurrentScene == "MainScene")
+    //    if (CurrentScene == "MainScene")
     //    {
-    //        scoreText.text = null;
-    //        restartText.text = null;
+
+    //            scoreText.text = "";
+    //            restartText.text = "";
+
+    //    }
+    //    else if( CurrentScene == "MiniGameScene")
+    //    {
+    //            panel.SetActive(false);
+    //            npcText.text = "";
+           
     //    }
     //}
 
