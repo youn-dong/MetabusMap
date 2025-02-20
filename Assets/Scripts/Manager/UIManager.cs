@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     public Text npcText;
 
     static UIManager uiManager;
-    public static UIManager Instance { get; private set;  } 
+    public static UIManager Instance { get; set;  } 
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI restartText;
 
@@ -26,12 +26,15 @@ public class UIManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
+            return;
         }
-        //CheckScene();
+        scoreText = FindObjectOfType<TextMeshProUGUI>();
+        restartText = FindObjectOfType<TextMeshProUGUI>();
     }
     private void Start()
     {
@@ -40,7 +43,7 @@ public class UIManager : MonoBehaviour
 
         if ( npc == null)
             npc = FindFirstObjectByType<NPC>();
-
+         
     }
     public void Update()
     {
@@ -53,6 +56,7 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateScore(int score)
     {
+        scoreText = FindObjectOfType<TextMeshProUGUI>();
         scoreText.text = score.ToString();
     }
     public void StartDialogue(GameObject npcObject)
@@ -95,24 +99,4 @@ public class UIManager : MonoBehaviour
         panel.SetActive(false);
         npcText.text = "";
     }
-    //protected void CheckScene()
-    //{
-    //    string CurrentScene = SceneManager.GetActiveScene().name;
-
-    //    if (CurrentScene == "MainScene")
-    //    {
-
-    //            scoreText.text = "";
-    //            restartText.text = "";
-
-    //    }
-    //    else if( CurrentScene == "MiniGameScene")
-    //    {
-    //            panel.SetActive(false);
-    //            npcText.text = "";
-           
-    //    }
-    //}
-
-
 }

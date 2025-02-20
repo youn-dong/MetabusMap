@@ -9,17 +9,18 @@ public class GameManager : MonoBehaviour
 {
     static GameManager gameManager;
     public static GameManager Instance { get { return gameManager; } }
-    private UIManager uimanager;
-    public  UIManager UImanager { get { return uimanager; } }
+    public  UIManager uimanager;
     private int currentScore = 0;
 
     private void Awake()
     {
         gameManager = this;
-        uimanager = FindObjectOfType<UIManager>();
+
+        if (uimanager == null)
+            uimanager = FindObjectOfType<UIManager>();
     }
     private void Start()
-    {
+    { 
         uimanager.UpdateScore(0);
     }
     public void GameOver()

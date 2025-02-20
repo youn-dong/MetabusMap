@@ -39892,7 +39892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ef0d3015dd396498b3426c8273d5cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetNPC: {fileID: 2005008371}
+  targetNPC: {fileID: 929986095}
 --- !u!114 &2009276064 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 584254199067774646, guid: 3526cb9cf3648694096dd90a1eec5ef4, type: 3}

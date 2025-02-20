@@ -7,16 +7,13 @@ public class Plane : MonoBehaviour
 {
     Animator animator;
     Rigidbody2D _rigidbody;
+    GameManager gameManager;
 
     public float flapForce = 6f;
     public float forwardSpeed = 3f;
     public bool isDead = false;
     float deathCoolDown = 0f;
-
     bool isFlap = false;
-
-    public bool GodMode = false;
-    GameManager gameManager;
 
     private void Start()
     {
@@ -77,8 +74,6 @@ public class Plane : MonoBehaviour
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (GodMode) return;
-
         if (isDead) return;
 
         isDead = true;
