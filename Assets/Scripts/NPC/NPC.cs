@@ -1,19 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NPC : MonoBehaviour
 {
     private UIManager uiManager;
+
     private string npcName;
     [SerializeField] private Text npcNameText;
-    [SerializeField] private GameObject npcNameUIPrefab;
-    private GameObject npcNameUIInstance;
+    [SerializeField] private GameObject npcNameUI_Prefab;
+    private GameObject npcNameUI_Instance;
     private NPCnaming npcNameUIScript; 
-    //public Text npcText;
+
     public GameObject panel;
     public bool isPlayerNearby;
+
+    [SerializeField] private GameObject interactionUI_Prefab;
+    private GameObject interactionUI_Instance;
+
+    private bool gameChoice = false;
 
     public void Start()
     {
@@ -21,16 +28,14 @@ public class NPC : MonoBehaviour
             uiManager = FindFirstObjectByType<UIManager>();
         panel.SetActive(false);
 
-        if(npcNameUIPrefab != null)
+        if(npcNameUI_Prefab != null)
         {
             GameObject canvas = GameObject.Find("Canvas");
-            npcNameUIInstance = Instantiate(npcNameUIPrefab, canvas.transform);
-            npcNameUIScript = npcNameUIInstance.GetComponent<NPCnaming>();
+            npcNameUI_Instance = Instantiate(npcNameUI_Prefab, canvas.transform);
+            npcNameUIScript = npcNameUI_Instance.GetComponent<NPCnaming>();
             npcNameUIScript.targetNPC = this.transform;
-            npcNameUIInstance.GetComponent<Text>().text = npcName;
+            npcNameUI_Instance.GetComponent<Text>().text = npcName;
         }
-
-
     }
     public void Update()
     {
@@ -45,6 +50,25 @@ public class NPC : MonoBehaviour
         {
             uiManager.StartDialogue(gameObject);
         }
+        if (interactionUI_Instance != null) 
+        {
+            Vector3 interaction_screenPos= Camera.main.WorldToScreenPoint(transform.position);
+            interactionUI_Instance.transform.position = screenPos + new Vector3(0, 80, 0);
+
+        if(gameChoice)
+            {
+                if(Input.GetKeyDown(KeyCode.Y))
+                {
+                    Debug.Log("Y키 눌림 - 씬 변경 시도");
+                    SceneManager.LoadScene(1);
+                }
+            }
+        else if(Input.GetKeyDown(KeyCode.N))
+            {
+                uiManager.HideDialogue();
+                gameChoice = false;
+            }
+        }
     }
     
     public List<string> GetNPCDialogue(GameObject gameObject)
@@ -56,7 +80,8 @@ public class NPC : MonoBehaviour
                 { "안녕하신가?, 어서오시게, 밥은 먹었나?", "좋은 하루 보내시게" };
             case "Male NPC2":
                 return new  List<string> 
-                { "나와 게임 한판 해보겠나?!", "내 실력은 꽤나 수준급인데 괜찮겠나", "자 준비됐나?" } ;
+                { "나와 게임 한판 해보겠나?!", "내 실력은 꽤나 수준급인데 괜찮겠나", "자 준비됐나?", 
+                    "준비가 되었다면 Y로 시작,\t 안 되었다면 N을 눌러 강해져서 돌아오게나" } ;
             case "Female NPC":
                 return new List<string> 
                 { "당신이 꼭 남편 좀 이겨줘요!", "그는 너무 자신만만해 하는 스타일이에요", "근데 너무 잘생기지 않았나요?" } ;
@@ -73,12 +98,22 @@ public class NPC : MonoBehaviour
         {
             isPlayerNearby = true;
         }
+        if(interactionUI_Prefab != null && interactionUI_Instance == null)
+        {
+            GameObject canvas = GameObject.Find("Canvas");
+            interactionUI_Instance = Instantiate(interactionUI_Prefab, canvas.transform);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             isPlayerNearby = false;
+        }
+        if(interactionUI_Instance != null)
+        {
+            Destroy(interactionUI_Instance);
+            interactionUI_Instance = null;
         }
     }
 }

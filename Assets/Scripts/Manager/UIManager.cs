@@ -97,16 +97,16 @@ public class UIManager : MonoBehaviour
         panel.SetActive(false);
         npcText.text = "";
     }
-    protected void CheckScene()
-    {
-        string CurrentScene = SceneManager.GetActiveScene().name;
+    //protected void CheckScene()
+    //{
+    //    string CurrentScene = SceneManager.GetActiveScene().name;
 
-        if(CurrentScene == "MainScene")
-        {
-            scoreText.text = null;
-            restartText.text = null;
-        }
-    }
+    //    if(CurrentScene == "MainScene")
+    //    {
+    //        scoreText.text = null;
+    //        restartText.text = null;
+    //    }
+    //}
 
 
 }

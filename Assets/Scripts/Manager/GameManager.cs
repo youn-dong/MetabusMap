@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
     public void AddScore(int score)
     {
         currentScore += score;
-        uimanager.UpdateScore(currentScore);
-        
+        uimanager.UpdateScore(currentScore); 
     }
 }
