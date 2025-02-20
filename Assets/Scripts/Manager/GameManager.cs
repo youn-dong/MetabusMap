@@ -1,28 +1,33 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    static GameManager gameManager;
-    public static GameManager Instance { get { return gameManager; } }
-    public  UIManager uimanager;
+
+    public static GameManager Instance { get; private set; } 
+    private  UIManager uimanager;
     private int currentScore = 0;
+    private GameObject exitPanel;
+    private bool isGameOver = false;
 
     private void Awake()
     {
-        gameManager = this;
-        if (uimanager == null)
+        if(Instance == null)
         {
-            uimanager = FindObjectOfType<UIManager>();
-            if (uimanager == null)
-            {
-                Debug.LogError(" UIManager를 찾을 수 없습니다.");
-            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+        uimanager = FindObjectOfType<UIManager>();
+    
     }
     private void Start()
     { 
@@ -30,22 +35,11 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
-        if (uimanager == null)
-        {
-            uimanager = FindObjectOfType<UIManager>();
-            if (uimanager == null)
-            {
-                Debug.LogError("UIManager를 찾을 수 없습니다!");
-                return;
-            }
-        }
-
-        if (uimanager.restartText == null)
-        {
-            Debug.LogError(" restartText가 null 입니다!");
-            return;
-        }
+        isGameOver = true;
+        uimanager.restartText.gameObject.SetActive(true);
+        uimanager.exitPanel.gameObject.SetActive(true);
         uimanager.SetReStart();
+       
     }
     public void RestartGame()
     {
@@ -56,5 +50,15 @@ public class GameManager : MonoBehaviour
     {
         currentScore += score;
         uimanager.UpdateScore(currentScore); 
+    }
+    private void Update()
+    {
+        if(isGameOver && Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene(0);
+            uimanager.restartText.gameObject.SetActive(false);
+            uimanager.exitPanel.gameObject.SetActive(false);
+        }
+        
     }
 }

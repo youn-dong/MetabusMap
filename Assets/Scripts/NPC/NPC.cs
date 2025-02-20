@@ -42,12 +42,19 @@ public class NPC : MonoBehaviour
         Vector3 worldPos = transform.position; // NPC의 월드 좌표
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos); // 화면 좌표로 변환
 
-
-        // 화면 좌표로 변환된 값을 UI 텍스트 위치로 설정
-        npcNameText.transform.position = screenPos;
+        if(npcNameText != null)
+        {
+            // 화면 좌표로 변환된 값을 UI 텍스트 위치로 설정
+            npcNameText.transform.position = screenPos;
+        }
+        else
+        {
+            Debug.LogWarning("NPC이름이 없습니다.");
+        }
 
         if (isPlayerNearby && Input.GetKeyDown(KeyCode.F))
         {
+            Debug.Log("F");
             uiManager.StartDialogue(gameObject);
         }
         if (interactionUI_Instance != null) 
@@ -60,7 +67,9 @@ public class NPC : MonoBehaviour
                 if(Input.GetKeyDown(KeyCode.Y))
                 {
                 Debug.Log("Y키 눌림 - 씬 변경 시도");
+                    uiManager.HideDialogue();
                     SceneManager.LoadScene(1);
+                    gameChoice = true;
                 }
             }
         else if(Input.GetKeyDown(KeyCode.N))
