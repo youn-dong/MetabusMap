@@ -15,9 +15,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         gameManager = this;
-
         if (uimanager == null)
+        {
             uimanager = FindObjectOfType<UIManager>();
+            if (uimanager == null)
+            {
+                Debug.LogError(" UIManager를 찾을 수 없습니다.");
+            }
+        }
     }
     private void Start()
     { 
@@ -25,6 +30,21 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
+        if (uimanager == null)
+        {
+            uimanager = FindObjectOfType<UIManager>();
+            if (uimanager == null)
+            {
+                Debug.LogError("UIManager를 찾을 수 없습니다!");
+                return;
+            }
+        }
+
+        if (uimanager.restartText == null)
+        {
+            Debug.LogError(" restartText가 null 입니다!");
+            return;
+        }
         uimanager.SetReStart();
     }
     public void RestartGame()

@@ -9,12 +9,14 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    static UIManager uiManager;
+    public static UIManager Instance { get; set; }
     private NPC npc;
+    [Header("MainScene에 사용")]
     public GameObject panel;
     public Text npcText;
 
-    static UIManager uiManager;
-    public static UIManager Instance { get; set;  } 
+    [Header("MiniGameScene에 사용")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI restartText;
 
@@ -33,8 +35,8 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        scoreText = FindObjectOfType<TextMeshProUGUI>();
-        restartText = FindObjectOfType<TextMeshProUGUI>();
+        scoreText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        restartText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
@@ -56,7 +58,6 @@ public class UIManager : MonoBehaviour
     }
     public void UpdateScore(int score)
     {
-        scoreText = FindObjectOfType<TextMeshProUGUI>();
         scoreText.text = score.ToString();
     }
     public void StartDialogue(GameObject npcObject)
