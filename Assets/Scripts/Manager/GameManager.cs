@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if(isGameOver && Input.GetKeyDown(KeyCode.Space))
+        if(isGameOver && Input.GetKeyDown(KeyCode.Escape))
         {
             SceneManager.LoadScene(0);
             uimanager.restartText.gameObject.SetActive(false);

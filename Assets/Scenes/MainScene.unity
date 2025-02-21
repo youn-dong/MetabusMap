@@ -6502,7 +6502,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB098\uAC00\uACE0\uC2F6\uB2E4\uBA74 Spaece"
+  m_Text: "\uB098\uAC00\uACE0\uC2F6\uB2E4\uBA74 ESC"
 --- !u!222 &1255120413
 CanvasRenderer:
   m_ObjectHideFlags: 0
